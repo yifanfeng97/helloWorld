@@ -170,7 +170,7 @@ def main():
     # only used when we resume training from some checkpoint model
     resume_epoch = 0
 
-    if cfg.resume_training and os.path.exists(cfg.init_model_file):
+    if cfg.resume_training and os.path.exists(cfg.init_cls_model_file):
         model = train_helper.get_model(cfg, load_param_from_ours=True)
     else:
         model = train_helper.get_model(cfg, pretrained=cfg.model_pretrain)

@@ -18,8 +18,8 @@ from mpl_toolkits.mplot3d import Axes3D
 import point_preprocess
 import h5_helper
 import os.path as osp
-
-base_dir = '../../data/modelnet40_ply_hdf5_2048'
+sys.path.append('../')
+from utils import config
 
 class point_part_shapenet_Dataset(data.Dataset):
 
@@ -105,13 +105,14 @@ class point_part_shapenet_Dataset(data.Dataset):
 class point_modelnet40_Dataset_cls(data.Dataset):
     def __init__(self, mode='train'):
         super(point_modelnet40_Dataset_cls, self).__init__()
+        cfg = config.config()
         if mode=='train':
             self.files = h5_helper.getDataFiles(
-                osp.join(base_dir, 'train_files.txt')
+                osp.join(cfg.modelnet_cls_dir, 'train_files.txt')
             )
         elif mode=='test':
             self.files = h5_helper.getDataFiles(
-                osp.join(base_dir, 'test_file.txt')
+                osp.join(cfg.modelnet_cls_dir, 'test_file.txt')
             )
         self.files = [self.files[0]]
         self.data = None
@@ -145,8 +146,8 @@ class point_modelnet40_Dataset_cls(data.Dataset):
 if __name__ == '__main__':
     # print('test')
     # d = point_part_shapenet_Dataset(root = '../../data/shapenetcore_partanno_segmentation_benchmark_v0', class_choice = ['Chair'])
-    data_root = '../../data/modelnet40_ply_hdf5_2048'
-    file_name = osp.join(data_root, 'ply_data_train4.h5')
+    cfg = config.config()
+    file_name = osp.join(cfg.modelnet_cls_dir, 'ply_data_train4.h5')
     d = point_modelnet40_Dataset_cls(mode='train')
     print(len(d))
     ps, cls = d[278]
