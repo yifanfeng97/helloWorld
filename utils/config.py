@@ -14,11 +14,20 @@ class config():
         self.resume_training = cfg.getboolean('DEFAULT', 'resume_training')
         # cls
         self.modelnet_cls_dir = cfg.get('CLS', 'modelnet_cls_dir')
+        self.modelnet_cls_result_dir = cfg.get('CLS', 'modelnet_cls_result_dir')
+        self.modelnet_init_cls_dir = cfg.get('CLS', 'modelnet_init_cls_dir')
+        self.modelnet_init_cls_model_file = cfg.get('CLS', 'modelnet_init_cls_model_file')
+        self.modelnet_init_cls_optim_file = cfg.get('CLS', 'modelnet_init_cls_optim_file')
+        # train
+        self.lr = cfg.getfloat('TRAIN', 'lr')
+        self.momentum = cfg.getfloat('TRAIN', 'momentum')
 
         self.check_dirs()
 
     def check_dirs(self):
         self.check_dir(self.result_dir)
+        self.check_dir(self.modelnet_cls_result_dir)
+        self.check_dir(self.modelnet_init_cls_dir)
 
     def check_dir(self, dir):
         if not osp.exists(dir):
