@@ -10,9 +10,9 @@ class APMeter(meter.Meter):
 
     The APMeter is designed to operate on `NxK` Tensors `output` and
     `target`, and optionally a `Nx1` Tensor weight where (1) the `output`
-    contains model output scores for `N` examples and `K` classes that ought to
-    be higher when the model is more convinced that the example should be
-    positively labeled, and smaller when the model believes the example should
+    contains models output scores for `N` examples and `K` classes that ought to
+    be higher when the models is more convinced that the example should be
+    positively labeled, and smaller when the models believes the example should
     be negatively labeled (for instance, the output of a sigmoid function); (2)
     the `target` contains only values 0 (for negative examples) and 1
     (for positive examples); and (3) the `weight` ( > 0) represents weight for
@@ -33,7 +33,7 @@ class APMeter(meter.Meter):
         Args:
             output (Tensor): NxK tensor that for each of the N examples
                 indicates the probability of the example belonging to each of
-                the K classes, according to the model. The probabilities should
+                the K classes, according to the models. The probabilities should
                 sum to one over all classes
             target (Tensor): binary NxK tensort that encodes which of the K
                 classes are associated with the N-th input
@@ -96,7 +96,7 @@ class APMeter(meter.Meter):
             self.weights.narrow(0, offset, weight.size(0)).copy_(weight)
 
     def value(self):
-        """Returns the model's average precision for each class
+        """Returns the models's average precision for each class
 
         Return:
             ap (FloatTensor): 1xK tensor, with avg precision for each class k

@@ -30,7 +30,7 @@ class ConfusionMeter(meter.Meter):
         Computes the confusion matrix of K x K size where K is no of classes
         Args:
             predicted (tensor): Can be an N x K tensor of predicted scores obtained from
-                the model for N examples and K classes or an N-tensor of
+                the models for N examples and K classes or an N-tensor of
                 integer values between 1 and K.
             target (tensor): Can be a N-tensor of integer values assumed to be integer
                 values between 1 and K or N x K tensor, where targets are

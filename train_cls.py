@@ -163,7 +163,7 @@ def main():
     cfg = config.config()
 
     best_prec1 = 0
-    # only used when we resume training from some checkpoint model
+    # only used when we resume training from some checkpoint models
     resume_epoch = 0
 
     if cfg.resume_training and os.path.exists(cfg.modelnet_init_cls_model_file):
@@ -171,18 +171,18 @@ def main():
     else:
         model = train_helper.get_model(cfg, dataset='modelnet40')
 
-    print('model: ')
+    print('models: ')
     print(model)
 
     # multiple gpu
-    # model.cuda()
+    # models.cuda()
 
     # optimizer
     optimizer = optim.SGD(model.parameters(), cfg.lr,
                           momentum=cfg.momentum,
                           weight_decay=cfg.weight_decay)
 
-    # if we load model from pretrained, we need the optim state here
+    # if we load models from pretrained, we need the optim state here
     if cfg.resume_training and os.path.exists(cfg.modelnet_init_cls_optim_file):
         print('loading optim epoch prec from {0}'.format(cfg.modelnet_init_cls_optim_file))
         optim_state = torch.load(cfg.modelnet_init_cls_optim_file)
@@ -195,8 +195,8 @@ def main():
 
     criterion = nn.CrossEntropyLoss()
 
-    print('shift model and criterion to GPU .. ')
-    # model = model.cuda()
+    print('shift models and criterion to GPU .. ')
+    # models = models.cuda()
     # define loss function (criterion) and pptimizer
     criterion = criterion.cuda()
 
