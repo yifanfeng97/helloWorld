@@ -10,6 +10,7 @@ import train_helper
 import os
 from utils import meter
 from utils import config
+from data_helper import point_datasets
 import numpy as np
 
 
@@ -42,13 +43,8 @@ def train(train_loader, model, criterion, optimizer, epoch, cfg):
         # forward, backward optimize
         preds = model(inputs_img)  # bz x C x H x W
         preds = preds.squeeze()
-        if cfg.model == 'googlenet':
-            preds, aux = preds
-            loss_main = criterion(preds, gt_labels)
-            loss_aux = criterion(aux, gt_labels)
-            softmax_loss = loss_main + 0.3 * loss_aux
-        else:
-            softmax_loss = criterion(preds, gt_labels)
+
+        softmax_loss = criterion(preds, gt_labels)
         loss = softmax_loss
 
         prec.add(preds.data, gt_labels.data)
@@ -187,9 +183,9 @@ def main():
                           weight_decay=cfg.weight_decay)
 
     # if we load model from pretrained, we need the optim state here
-    if cfg.resume_training and os.path.exists(cfg.optim_state_file):
-        print('loading optim epoch prec from {0}'.format(cfg.optim_state_file))
-        optim_state = torch.load(cfg.optim_state_file)
+    if cfg.resume_training and os.path.exists(cfg.modelnet_init_cls_optim_file):
+        print('loading optim epoch prec from {0}'.format(cfg.modelnet_init_cls_optim_file))
+        optim_state = torch.load(cfg.modelnet_init_cls_optim_file)
 
         resume_epoch = optim_state['epoch'] + 1
         best_prec1 = optim_state['best_prec1']
@@ -204,23 +200,13 @@ def main():
     # define loss function (criterion) and pptimizer
     criterion = criterion.cuda()
 
-    train_loader = None
-    val_loader = None
-    if cfg.train_file_wise == False and cfg.train_slide_wise == False:
-        train_loader = train_helper.get_dataloader(True, cfg.train_patch_frac, cfg)
-        val_loader = train_helper.get_dataloader(False, cfg.val_patch_frac, cfg)
+    train_loader = point_datasets.point_modelnet40_Dataset_cls(mode='train')
+    val_loader = point_datasets.point_modelnet40_Dataset_cls(mode='test')
 
     for epoch in range(resume_epoch, cfg.max_epoch):
 
-        if cfg.train_slide_wise:
-            # train_helper.train_slide_wise(train, model, criterion, optimizer, epoch, cfg)
-            prec1, confusion_mat = train_helper.validate_slide_wise(validate, model, criterion, epoch, cfg)
-        elif cfg.train_file_wise:
-            train_helper.train_file_wise(train, model, criterion, optimizer, epoch, cfg)
-            prec1, confusion_mat = train_helper.validate_file_wise(validate, model, criterion, epoch, cfg)
-        else:
-            train(train_loader, model, criterion, optimizer, epoch, cfg)
-            prec1, confusion_mat = validate(val_loader, model, criterion, epoch, cfg)
+        train(train_loader, model, criterion, optimizer, epoch, cfg)
+        prec1, confusion_mat = validate(val_loader, model, criterion, epoch, cfg)
 
         if best_prec1 < prec1:
             # save checkpoints

@@ -21,6 +21,8 @@ class config():
         # train
         self.lr = cfg.getfloat('TRAIN', 'lr')
         self.momentum = cfg.getfloat('TRAIN', 'momentum')
+        self.weight_decay = cfg.getfloat('TRAIN', 'weight_decay')
+        self.max_epoch = cfg.getfloat('TRAIN', 'max_epoch')
 
         self.check_dirs()
 
