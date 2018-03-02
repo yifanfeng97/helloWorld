@@ -79,7 +79,7 @@ class outconv(nn.Module):
         return x
 
 class outcls(nn.Module):
-    def __init(self, in_ch, out_ch):
+    def __init__(self, in_ch, out_ch):
         super(outcls, self).__init__()
         self.conv = nn.Sequential(
             nn.Conv2d(in_ch, 4096, 7),
