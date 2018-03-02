@@ -13,7 +13,7 @@ import sys
 import torchvision.transforms as transforms
 import argparse
 import json
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import point_preprocess
 import h5_helper

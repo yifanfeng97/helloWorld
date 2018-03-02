@@ -1,12 +1,12 @@
 import sys
 import os
 import os.path as osp
-import ConfigParser
+import configparser
 
 class config():
     def __init__(self, cfg_file='config/config.cfg'):
 
-        cfg = ConfigParser.SafeConfigParser()
+        cfg = configparser.ConfigParser()
         cfg.read(cfg_file)
         #default
         self.base_dir = cfg.get('DEFAULT', 'base_dir')
