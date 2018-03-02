@@ -71,8 +71,6 @@ if __name__ == '__main__':
     target_label = 7
     cnt = 4
 
-    data_root = '../../data/modelnet40_ply_hdf5_2048'
-    file_name = osp.join(data_root, 'ply_data_train4.h5')
     d = point_datasets.point_modelnet40_Dataset_cls(mode='train')
 
     idx = 0
