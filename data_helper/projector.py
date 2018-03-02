@@ -71,7 +71,7 @@ if __name__ == '__main__':
     target_label = 7
     cnt = 4
 
-    d = point_datasets.point_modelnet40_Dataset_cls(mode='train')
+    d = point_datasets.point_modelnet40_Dataset_cls(mode='train', generate_img=False)
 
     idx = 0
     t_cnt = 0

@@ -103,7 +103,7 @@ class point_part_shapenet_Dataset(data.Dataset):
 
 
 class point_modelnet40_Dataset_cls(data.Dataset):
-    def __init__(self, mode='train'):
+    def __init__(self, mode='train', generate_img=True):
         super(point_modelnet40_Dataset_cls, self).__init__()
         cfg = config.config()
         if mode=='train':
@@ -117,10 +117,13 @@ class point_modelnet40_Dataset_cls(data.Dataset):
         self.files = [self.files[0]]
         self.data = None
         self.label = None
-        self.compose = point_preprocess.get_train_test_compose()
+        if generate_img:
+            self.compose = point_preprocess.get_train_test_compose()
+        else:
+            self.compose = point_preprocess.get_norm_points_compose()
         for f in self.files:
             cur_data, cur_label = h5_helper.loadDataFile(
-                osp.join('../../', f))
+                osp.join('../', f))
             if self.data is None:
                 self.data = cur_data
                 self.label = cur_label
