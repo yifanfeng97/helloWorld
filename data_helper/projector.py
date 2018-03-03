@@ -32,6 +32,7 @@ Table	04379243
 def get_theta(a, b):
     c = []
     for idx in range(len(a)):
+        # print(b[idx], idx)
         if b[idx] > 0:
             c.append(np.arctan(a[idx]/b[idx]))
         elif b[idx] == 0:
@@ -69,19 +70,19 @@ if __name__ == '__main__':
     #     class_choice = ['Motorbike'])
 
     target_label = 7
-    cnt = 3
+    cnt = 6
 
     d = point_datasets.point_modelnet40_Dataset_cls(mode='train', generate_img=False)
 
     idx = 0
     t_cnt = 0
     ps, cls = d[idx]
-    while True:
+    while t_cnt <= cnt:
         if cls.numpy() == target_label:
             t_cnt += 1
-            if t_cnt >= cnt: break
         idx += 1
         ps, cls = d[idx]
+    ps, cls = d[idx-1]
     print(ps.size, ps.type(), cls.size, cls.type())
     # print(ps.size(), ps.type(), seg.size(), seg.type())
     print(ps.shape)
@@ -98,7 +99,6 @@ if __name__ == '__main__':
     ps2_np_htmap = heatmap.get_heatmap_from_prob(ps2_np)
     plt.imshow(ps2_np_htmap)
     # ax.plot(ps2_np_htmap)
-    print(cls.numpy())
 
     plt.show()
 
