@@ -200,8 +200,13 @@ def main():
     # define loss function (criterion) and pptimizer
     criterion = criterion.cuda()
 
-    train_loader = point_datasets.point_modelnet40_Dataset_cls(mode='train')
-    val_loader = point_datasets.point_modelnet40_Dataset_cls(mode='test')
+    train_data = point_datasets.point_modelnet40_Dataset_cls(mode='train')
+    val_data = point_datasets.point_modelnet40_Dataset_cls(mode='test')
+
+    train_loader = torch.utils.data.DataLoader(train_data, batch_size=cfg.batch_size,
+                                               shuffle=True, num_workers=int(cfg.workers))
+    val_loader = torch.utils.data.DataLoader(val_data, batch_size=cfg.batch_size,
+                                               shuffle=True, num_workers=int(cfg.workers))
 
     for epoch in range(resume_epoch, cfg.max_epoch):
 

@@ -23,6 +23,8 @@ class config():
         self.momentum = cfg.getfloat('TRAIN', 'momentum')
         self.weight_decay = cfg.getfloat('TRAIN', 'weight_decay')
         self.max_epoch = cfg.getfloat('TRAIN', 'max_epoch')
+        self.batch_size = cfg.getfloat('TRAIN', 'batch_size')
+        self.workers = cfg.getfloat('TRAIN', 'workers')
 
         self.check_dirs()
 
