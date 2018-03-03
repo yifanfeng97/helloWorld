@@ -71,6 +71,7 @@ class ps_to_tensor(object):
 def get_norm_points_compose():
     compose = transforms.Compose([
         norm_r1(),
+        # random_rotate_points(),
         ps_to_tensor()
     ])
     return compose

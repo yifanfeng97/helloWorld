@@ -29,28 +29,31 @@ Table	04379243
 """
 
 
-def get_theta(a, b):
+def get_theta(a, b, z):
     c = []
     for idx in range(len(a)):
-        # print(b[idx], idx)
-        if b[idx] > 0:
-            c.append(np.arcsin(a[idx]/b[idx]))
-        elif b[idx] == 0:
-            c.append(np.arcsin(a[idx]/(b[idx]+1e-6)))
-        elif b[idx] < 0:
+
+        if b[idx] == 0:
+            val = np.arcsin(a[idx]/(b[idx] + 1e-6))
+        else:
+            val = np.arcsin(a[idx]/b[idx])
+
+        if z[idx] < 0 and a[idx] != 0:
             if a[idx] > 0:
-                c.append(-np.pi/2 + np.arctan(a[idx]/b[idx]))
-            elif a[idx] < 0:
-                c.append(np.pi/2 + np.arctan(a[idx]/b[idx]))
+                val = np.pi - val
+            else:
+                val = -np.pi - val
+
+        c.append(val)
+
     return np.array(c)
 
 def pjt_3d_to_2d(data, img_sz=200):
 
     L = np.sqrt(np.sum(data ** 2, -1))
     print (L.shape)
-    alpha = get_theta(data[:, 0], L)
-    beta = get_theta(data[:, 1], L)
-
+    alpha = get_theta(data[:, 0], L, data[:, 2])
+    beta = get_theta(data[:, 1], L, data[:, 2])
 
     alpha = alpha + np.pi
     beta = beta + np.pi
@@ -71,8 +74,8 @@ if __name__ == '__main__':
     #     root = '../../data/shapenetcore_partanno_segmentation_benchmark_v0',
     #     class_choice = ['Motorbike'])
 
-    target_label = 7
-    cnt = 6
+    target_label = 8
+    cnt = 7
 
     d = point_datasets.point_modelnet40_Dataset_cls(mode='train', generate_img=False)
 
@@ -91,6 +94,9 @@ if __name__ == '__main__':
 
     ps_np = ps.numpy()
 
+    # ps_np = np.array([
+    #     [0.7, 0, -0.7]
+    # ])
     fig = plt.figure()
     ax = fig.add_subplot(121, projection='3d')
     ax.scatter(ps_np[:, 0], ps_np[:, 1], ps_np[:, 2])
