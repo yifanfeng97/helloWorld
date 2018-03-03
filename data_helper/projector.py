@@ -34,9 +34,9 @@ def get_theta(a, b):
     for idx in range(len(a)):
         # print(b[idx], idx)
         if b[idx] > 0:
-            c.append(np.arctan(a[idx]/b[idx]))
+            c.append(np.arcsin(a[idx]/b[idx]))
         elif b[idx] == 0:
-            c.append(np.arctan(a[idx]/(b[idx]+1e-6)))
+            c.append(np.arcsin(a[idx]/(b[idx]+1e-6)))
         elif b[idx] < 0:
             if a[idx] > 0:
                 c.append(-np.pi/2 + np.arctan(a[idx]/b[idx]))
@@ -46,9 +46,11 @@ def get_theta(a, b):
 
 def pjt_3d_to_2d(data, img_sz=200):
 
-    alpha = get_theta(data[:, 0], data[:, 2])
-    beta = get_theta(data[:, 1], data[:, 2])
-    L = np.sqrt(np.sum(data**2, -1))
+    L = np.sqrt(np.sum(data ** 2, -1))
+    print (L.shape)
+    alpha = get_theta(data[:, 0], L)
+    beta = get_theta(data[:, 1], L)
+
 
     alpha = alpha + np.pi
     beta = beta + np.pi
@@ -77,12 +79,12 @@ if __name__ == '__main__':
     idx = 0
     t_cnt = 0
     ps, cls = d[idx]
-    while t_cnt <= cnt:
+    while True:
         if cls.numpy() == target_label:
             t_cnt += 1
+            if t_cnt >= cnt: break
         idx += 1
         ps, cls = d[idx]
-    ps, cls = d[idx-1]
     print(ps.size, ps.type(), cls.size, cls.type())
     # print(ps.size(), ps.type(), seg.size(), seg.type())
     print(ps.shape)
