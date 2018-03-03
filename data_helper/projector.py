@@ -87,7 +87,6 @@ if __name__ == '__main__':
     print(ps.shape)
 
     ps_np = ps.numpy()
-    # ps_np = ps
 
     fig = plt.figure()
     ax = fig.add_subplot(121, projection='3d')
