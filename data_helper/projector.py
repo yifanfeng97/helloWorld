@@ -43,6 +43,10 @@ def get_theta(a, b, z):
                 val = np.pi - val
             else:
                 val = -np.pi - val
+            # if a[idx] > 0:
+            #     val = -(np.pi - val)
+            # else:
+            #     val = -(-np.pi - val)
 
         c.append(val)
 
@@ -74,8 +78,8 @@ if __name__ == '__main__':
     #     root = '../../data/shapenetcore_partanno_segmentation_benchmark_v0',
     #     class_choice = ['Motorbike'])
 
-    target_label = 8
-    cnt = 7
+    target_label = 7
+    cnt = 9
 
     d = point_datasets.point_modelnet40_Dataset_cls(mode='train', generate_img=False)
 
@@ -94,9 +98,32 @@ if __name__ == '__main__':
 
     ps_np = ps.numpy()
 
-    # ps_np = np.array([
-    #     [0.7, 0, -0.7]
-    # ])
+    ps_np = np.array([
+        [0.7, 0, -0.7],
+        [0.7, 0, 0.7],
+        [-0.7, 0, 0.7],
+        [-0.7, 0, -0.7],
+        [0, 0.7, -0.7],
+        [0, 0.7, 0.7],
+        [0, -0.7, 0.7],
+        [0, -0.7, -0.7],
+    ])
+
+    # ps_np = []
+    # for idx in range(5):
+    #     theta = np.random.random()*np.pi
+    #     phi = np.random.random()*2*np.pi
+    #     # x = np.random.random()*2 - 1
+    #     # y = np.random.random()*np.sqrt(1-x**2)*2 - 1
+    #     # z = np.sqrt(1 - x**2 - y**2)
+    #     x = 0.8*np.sin(theta)*np.cos(phi)
+    #     y = 0.8*np.sin(theta)*np.sin(phi)
+    #     z = 0.8*np.cos(theta)
+    #
+    #     ps_np.append([x, y, z])
+    # ps_np = np.array(ps_np)
+    # print(ps_np)
+
     fig = plt.figure()
     ax = fig.add_subplot(121, projection='3d')
     ax.scatter(ps_np[:, 0], ps_np[:, 1], ps_np[:, 2])
